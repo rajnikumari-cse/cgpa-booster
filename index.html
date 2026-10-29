@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CGPA Booster | Student Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#">CGPA<span>Booster</span></a>
+    <p class="side-label">WORKSPACE</p>
+    <a class="nav-link active" href="#dashboard">▦ Dashboard</a>
+    <a class="nav-link" href="#semesters">▤ My Semesters</a>
+    <a class="nav-link" href="#planner">✓ Study Planner</a>
+    <div class="sidebar-bottom">
+      <div class="avatar">S</div>
+      <div><strong>Student</strong><small>Academic journey</small></div>
+    </div>
+  </aside>
+
+  <main class="main-content" id="dashboard">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">STUDENT WORKSPACE</p>
+        <h1>Your Academic Dashboard</h1>
+        <p class="muted">Track your progress. Achieve your goals.</p>
+      </div>
+      <div class="saved-label"><span></span> Auto-save enabled</div>
+    </header>
+
+    <section class="welcome">
+      <div>
+        <p class="welcome-tag">YOUR JOURNEY, YOUR PROGRESS</p>
+        <h2>Small steps. Better grades. <br>Brighter future.</h2>
+        <p>Keep your semester scores and study goals organised in one place.</p>
+        <a href="#semesters" class="primary-btn">Manage semesters →</a>
+      </div>
+      <div class="welcome-icon">✦</div>
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card">
+        <div class="stat-icon purple-icon">▤</div>
+        <p>Semesters Added</p>
+        <h2 id="semesterCount">0</h2>
+        <small>Your academic records</small>
+      </article>
+      <article class="stat-card">
+        <div class="stat-icon pink-icon">↗</div>
+        <p>Average SGPA</p>
+        <h2 id="averageSGPA">0.00</h2>
+        <small>Based on entered semesters</small>
+      </article>
+      <article class="stat-card">
+        <div class="stat-icon blue-icon">◎</div>
+        <p>Target Progress</p>
+        <h2 id="goalProgress">0%</h2>
+        <small>Progress towards your target</small>
+      </article>
+      <article class="stat-card">
+        <div class="stat-icon green-icon">✓</div>
+        <p>Tasks Completed</p>
+        <h2 id="tasksDone">0/0</h2>
+        <small>Your study planner</small>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel" id="semesters">
+        <div class="panel-heading">
+          <div><h2>Semester Performance</h2><p class="muted">Add and manage your SGPA records</p></div>
+          <span class="pill">Scale: 0–10</span>
+        </div>
+
+        <form id="gradeForm" class="semester-form">
+          <div class="field">
+            <label for="semesterName">Semester</label>
+            <select id="semesterName" required>
+              <option value="">Select semester</option>
+              <option>Semester 1</option>
+              <option>Semester 2</option>
+              <option>Semester 3</option>
+              <option>Semester 4</option>
+              <option>Semester 5</option>
+              <option>Semester 6</option>
+              <option>Semester 7</option>
+              <option>Semester 8</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="sgpa">SGPA</label>
+            <input id="sgpa" type="number" min="0" max="10" step="0.01"
+              placeholder="e.g. 7.25" required>
+          </div>
+          <button class="primary-btn add-btn" type="submit">+ Add Score</button>
+        </form>
+
+        <div class="records-heading"><h3>Your records</h3><span id="recordCount">0 records</span></div>
+        <div id="records" class="records">
+          <p class="empty-state">No semester records yet. Add your first score above.</p>
+        </div>
+        <p class="note">Note: Average SGPA is an estimate, not necessarily your official CGPA. Use your university's calculation formula for the official result.</p>
+      </article>
+
+      <article class="panel target-panel">
+        <div class="panel-heading">
+          <div><h2>CGPA Goal</h2><p class="muted">Set your academic target</p></div>
+          <span class="target-symbol">◎</span>
+        </div>
+        <label for="target">Target CGPA</label>
+        <input id="target" type="number" min="0.01" max="10" step="0.01" placeholder="e.g. 7.00">
+        <div class="goal-number"><span id="targetDisplay">7.00</span><small>/ 10.00 target</small></div>
+        <div class="progress-track"><div id="goalBar" class="progress-fill"></div></div>
+        <p id="goalMessage" class="goal-message">Add your semester scores to track your progress.</p>
+        <div class="goal-tip"><strong>✦ Study tip</strong><p>Consistent revision and regular practice can help you work towards your academic goals.</p></div>
+      </article>
+    </section>
+
+    <section class="panel chart-panel">
+      <div class="panel-heading">
+        <div><h2>Performance Overview</h2><p class="muted">See how your SGPA changes across semesters</p></div>
+      </div>
+      <div class="chart-wrap"><canvas id="performanceChart"></canvas></div>
+    </section>
+
+    <section class="panel planner-panel" id="planner">
+      <div class="panel-heading">
+        <div><h2>Study Planner</h2><p class="muted">Organise your daily learning goals</p></div>
+        <span class="pill" id="taskProgress">0% complete</span>
+      </div>
+
+      <form id="taskForm" class="task-form">
+        <div class="field task-title-field">
+          <label for="taskInput">Study task</label>
+          <input id="taskInput" type="text" maxlength="150" placeholder="e.g. Revise DBMS chapter 1" required>
+        </div>
+        <div class="field">
+          <label for="taskPriority">Priority</label>
+          <select id="taskPriority">
+            <option>High</option><option selected>Medium</option><option>Low</option>
+          </select>
+        </div>
+        <button class="primary-btn add-btn" type="submit">+ Add Task</button>
+      </form>
+
+      <div class="task-progress-track"><div id="taskBar" class="progress-fill"></div></div>
+      <div id="taskList" class="task-list">
+        <p class="empty-state">No tasks yet. Add a study task to get started.</p>
+      </div>
+    </section>
+
+    <footer>CGPA Booster <span>·</span> Built for your academic journey 💜</footer>
+  </main>
+</body>
+</html>
